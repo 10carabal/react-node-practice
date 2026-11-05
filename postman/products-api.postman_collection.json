@@ -1,0 +1,199 @@
+{
+  "info": {
+    "name": "Products API - Practice",
+    "description": "Colección de práctica: CRUD de productos, códigos de estado y validación. Importar en Postman y correr con la API levantada en http://localhost:3000",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "01 · Health",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        },
+        "description": "Verifica que la API esté viva. Esperado: 200."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('responde ok', () => pm.expect(pm.response.json().status).to.eql('ok'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "02 · Listar productos",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["products"]
+        },
+        "description": "Esperado: 200 con un array de 5 productos."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 200', () => pm.response.to.have.status(200));",
+              "pm.test('es un array', () => pm.expect(pm.response.json()).to.be.an('array'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "03 · Buscar por nombre",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products?q=teclado",
+          "host": ["{{baseUrl}}"],
+          "path": ["products"],
+          "query": [{ "key": "q", "value": "teclado" }]
+        },
+        "description": "Query param q. Esperado: 200 con los productos que coinciden."
+      }
+    },
+    {
+      "name": "04 · Detalle",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products/p-1",
+          "host": ["{{baseUrl}}"],
+          "path": ["products", "p-1"]
+        },
+        "description": "Esperado: 200 con el producto."
+      }
+    },
+    {
+      "name": "05 · Detalle inexistente (404)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products/no-existe",
+          "host": ["{{baseUrl}}"],
+          "path": ["products", "no-existe"]
+        },
+        "description": "Esperado: 404. Recurso inexistente ≠ ruta inexistente."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status 404', () => pm.response.to.have.status(404));"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "06 · Crear producto (201)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Webcam 4K\",\n  \"description\": \"Autoenfoque y micrófono dual\",\n  \"price\": 120000,\n  \"category\": \"Periféricos\",\n  \"stock\": 6\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["products"]
+        },
+        "description": "Esperado: 201 Created con el producto y su id generado."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('status 201', () => pm.response.to.have.status(201));",
+              "pm.test('devuelve id', () => pm.expect(pm.response.json().id).to.be.a('string'));"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "07 · Crear inválido (422)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"ab\",\n  \"description\": \"\",\n  \"price\": -5,\n  \"category\": \"\",\n  \"stock\": -1\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products",
+          "host": ["{{baseUrl}}"],
+          "path": ["products"]
+        },
+        "description": "Esperado: 422 con el detalle de cada error de validación."
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": ["pm.test('status 422', () => pm.response.to.have.status(422));"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "08 · Actualizar (TODO día 7)",
+      "request": {
+        "method": "PUT",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"price\": 135000,\n  \"stock\": 10\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/products/p-1",
+          "host": ["{{baseUrl}}"],
+          "path": ["products", "p-1"]
+        },
+        "description": "Esperado después del TODO: 200 con el producto actualizado."
+      }
+    },
+    {
+      "name": "09 · Eliminar (TODO día 7)",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/products/p-5",
+          "host": ["{{baseUrl}}"],
+          "path": ["products", "p-5"]
+        },
+        "description": "Esperado después del TODO: 204 sin body. Si repetís, 404."
+      }
+    }
+  ]
+}

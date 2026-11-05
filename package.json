@@ -1,0 +1,17 @@
+{
+  "name": "react-node-practice",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Proyecto de practica full stack con React, TypeScript, Node y Express",
+  "scripts": {
+    "install:all": "npm install --prefix frontend && npm install --prefix backend",
+    "dev": "concurrently -n api,web -c blue,green \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\"",
+    "dev:web": "npm run dev --prefix frontend",
+    "dev:api": "npm run dev --prefix backend",
+    "build:web": "npm run build --prefix frontend",
+    "typecheck": "npm run typecheck --prefix frontend"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  }
+}

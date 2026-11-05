@@ -1,0 +1,16 @@
+node_modules/
+dist/
+dist-ssr/
+*.local
+.env
+.env.local
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+.vite/
+coverage/
+
+# Notas locales de estudio (no se publican)
+REPASO.md
+SOLUCIONES.md
