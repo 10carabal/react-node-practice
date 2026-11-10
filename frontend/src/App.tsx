@@ -5,8 +5,6 @@ import { Day2TodoList } from './exercises/Day2TodoList';
 import { Day3Users } from './exercises/Day3Users';
 import { Day4UseFetch } from './exercises/Day4UseFetch';
 import { Day5Cart } from './exercises/Day5Cart';
-import { PracticeList } from './exercises/PracticeList';
-import { NameForm } from './exercises/NameForm';
 import { HomePage } from './pages/HomePage';
 import { NewProductPage } from './pages/NewProductPage';
 import { NotFoundPage } from './pages/NotFoundPage';
@@ -30,9 +28,6 @@ export default function App() {
         <Route path="ejercicios/dia-3" element={<Day3Users />} />
         <Route path="ejercicios/dia-4" element={<Day4UseFetch />} />
         <Route path="ejercicios/dia-5" element={<Day5Cart />} />
-        <Route path="ejercicios/formulario" element={<NameForm />} />
-        <Route path="ejercicios/practica" element={<PracticeList />} />
-
         <Route path="*" element={<NotFoundPage />} />
       </Route>
     </Routes>
